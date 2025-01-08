@@ -12,8 +12,11 @@ import os
 username = "E0584"
 password = os.getenv('GREYT_PASSWORD')
 
-service = Service(executable_path=ChromeDriverManager().install())
-options = webdriver.ChromeOptions()
+options = options()
+options.add_argument("--headless")  # Run in headless mode
+options.add_argument("--no-sandbox")  # Required for GitHub Actions
+options.add_argument("--disable-dev-shm-usage")  # Reduce memory issues
+service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=options)
 
 def login(driver, username, password):
