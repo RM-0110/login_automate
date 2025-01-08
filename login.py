@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 import time
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from datetime import datetime
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
