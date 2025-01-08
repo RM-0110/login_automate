@@ -12,7 +12,7 @@ import os
 username = "E0584"
 password = os.getenv('GREYT_PASSWORD')
 
-options = options()
+options = Options()
 options.add_argument("--headless")  # Run in headless mode
 options.add_argument("--no-sandbox")  # Required for GitHub Actions
 options.add_argument("--disable-dev-shm-usage")  # Reduce memory issues
