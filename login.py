@@ -10,7 +10,7 @@ from datetime import datetime
 import os
 
 username = "E0584"
-password = ""
+password = os.getenv('GREYT_PASSWORD')
 
 service = Service(executable_path=ChromeDriverManager().install())
 options = webdriver.ChromeOptions()
