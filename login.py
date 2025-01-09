@@ -13,7 +13,7 @@ from email.mime.multipart import MIMEMultipart
 holiday_list = ["01.01.2025", "14.01.2025", "14.03.2025", "21.03.2025", "31.03.2025", "18.04.2025", "01.05.2025", "06.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
 
 username = "E0584"
-password = "Omsairam@0110"
+password = password = os.getenv('GREYT_PASSWORD')
 
 service = Service(executable_path=ChromeDriverManager().install())
 options = Options()
