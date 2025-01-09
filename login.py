@@ -45,7 +45,6 @@ def login(driver, username, password):
         print("Failed to log in! Error: %s" % e)
 
 
-
 def signin(driver, mode_of_work):
 
     login(driver, username, password) 
@@ -80,7 +79,6 @@ def signin(driver, mode_of_work):
     else:
         return f"Unable to sign in. '{mode_of_work}' option not found."
     
-    # Wait for the signin button and click it
     # shadow_host = WebDriverWait(driver, 10).until(
     # EC.presence_of_element_located((By.CSS_SELECTOR, ".flex.justify-end.hydrated"))
     # )
@@ -91,61 +89,6 @@ def signin(driver, mode_of_work):
     
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return f"Successfully signed in to '{mode_of_work}' at {current_time}"
-
-
-# def signout(driver, mode_of_work):
-#     """
-#     Sign out the user with the same mode of work: 'work from home' or 'work from office'.
-#     """
-#     login(driver, username, password) 
-    
-#     # Wait for the button and click it
-#     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//gt-button[@shade='primary']"))).click()
-    
-#     # Wait for the dropdown to appear
-#     select = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.TAG_NAME, "gt-dropdown")))
-#     select.click()
-    
-#     # Wait for shadow DOM to load
-#     shadow_root = WebDriverWait(driver, 10).until(
-#         EC.presence_of_element_located((By.TAG_NAME, "gt-dropdown"))
-#     )
-#     shadow_root = driver.execute_script("return arguments[0].shadowRoot", select)
-#     dropdown_items = shadow_root.find_elements(By.CSS_SELECTOR, ".dropdown-item .item-label")
-    
-#     valid_modes = {"work from home", "work from office."}
-#     mode_of_work = mode_of_work.strip().lower()
-    
-#     if mode_of_work not in valid_modes:
-#         return f"Unable to sign in. Invalid mode of work: '{mode_of_work}'"
-    
-#     for item in dropdown_items:
-#         if item.text.strip().lower() == mode_of_work:
-#             item.click()
-#             print(f"Clicked on '{mode_of_work.capitalize()}'")
-#             break
-#     else:
-#         return f"Unable to sign in. '{mode_of_work.capitalize()}' option not found."
-    
-#     # Wait for the signin button and click it
-#     time.sleep(5)
-#     shadow_host = WebDriverWait(driver, 10).until(
-#     EC.presence_of_element_located((By.CSS_SELECTOR, ".flex.justify-end.hydrated"))
-#     )
-#     signin_shadow_root  = shadow_host.shadow_root
-#     signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
-#     signin_button.click()
-#     print("Signin button clicked.")
-#     time.sleep(10)
-    
-#     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#     return f"Successfully signed out on '{mode_of_work.capitalize()}' at {current_time}"
-
-# output_text = signin(driver, mode_of_work="work from home")
-# print(output_text)
-
-# output_text = signout(driver, mode_of_work="work from home")
-# print(output_text)
 
 
 def send_email(subject, body):
