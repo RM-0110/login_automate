@@ -138,16 +138,16 @@ def main(driver):
     if current_date in holiday_list:
         holiday_message = f"Today, ({current_date}) is a holiday. No sign-in or sign-out will be performed."
         print(holiday_message)
-        send_email("Holiday Notice", holiday_message)
+        send_email("Punch Report - Holiday Notice", holiday_message)
         return
 
     if current_day in ['monday', 'tuesday', 'wednesday']:
         mode_of_work = "work from home"
-        signin_message = f"Triggering signin with mode of work: '{mode_of_work}'"
+        signin_message = f"Triggering punch with mode of work: '{mode_of_work}'"
         print(signin_message)
         output = signin(driver, mode_of_work)  # trigger the selenium function for work from home
         print(output)
-        send_email("Sign-in Report", signin_message + "\n" + output)
+        send_email("Punch Report", signin_message + "\n" + output)
 
     elif current_day in ['thursday', 'friday']:
         mode_of_work = "work from office."
@@ -155,11 +155,11 @@ def main(driver):
         print(signin_message)
         output = signin(driver, mode_of_work)  # trigger the selenium function for work from office
         print(output)
-        send_email("Sign-in Report", signin_message + "\n" + output)
+        send_email("Punch Report", signin_message + "\n" + output)
 
     else:
         weekend_message = "Today is Saturday or Sunday. No sign-in or sign-out will be triggered."
         print(weekend_message)
-        send_email("Weekend Notice", weekend_message)
+        send_email("Punch Report - Weekend Notice", weekend_message)
 
 main(driver)
