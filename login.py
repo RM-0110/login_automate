@@ -19,10 +19,12 @@ password = password = os.getenv('GREYT_PASSWORD')
 
 service = Service(executable_path=ChromeDriverManager().install())
 options = Options()
-#options.add_argument("--headless")  # Run Chrome in headless mode
-options.add_argument("--no-sandbox")  # Bypass OS security model
-options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
-options.add_argument("--disable-gpu")  # Applicable to Windows
+# options.add_argument("--headless")
+options.headless = True
+options.add_argument("--disable-gpu")  # Disable GPU rendering
+options.add_argument("--window-size=1920,1080")  # Set a fixed window size
+options.add_argument("--enable-javascript")  # Ensure JavaScript is enabled
+options.add_argument("--start-maximized")  # Maximize the window
 driver = webdriver.Chrome(service=service, options=options)
 
 def login(driver, username, password):
