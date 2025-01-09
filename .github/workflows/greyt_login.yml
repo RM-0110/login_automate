@@ -36,4 +36,5 @@ jobs:
           python login.py
         env:
           GREYT_PASSWORD: ${{ secrets.GREYT_PASSWORD }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
           DISPLAY: :99
