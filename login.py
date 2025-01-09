@@ -19,7 +19,7 @@ password = password = os.getenv('GREYT_PASSWORD')
 
 service = Service(executable_path=ChromeDriverManager().install())
 options = Options()
-options.add_argument("--headless")  # Run Chrome in headless mode
+#options.add_argument("--headless")  # Run Chrome in headless mode
 options.add_argument("--no-sandbox")  # Bypass OS security model
 options.add_argument("--disable-dev-shm-usage")  # Overcome limited resource problems
 options.add_argument("--disable-gpu")  # Applicable to Windows
