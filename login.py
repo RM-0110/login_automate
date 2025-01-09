@@ -208,3 +208,5 @@ def main(driver):
         weekend_message = "Today is Saturday or Sunday. No sign-in or sign-out will be triggered."
         print(weekend_message)
         send_email("Weekend Notice", weekend_message)
+
+main(driver)
