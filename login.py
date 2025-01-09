@@ -143,7 +143,7 @@ def main(driver):
 
     if current_day in ['monday', 'tuesday', 'wednesday']:
         mode_of_work = "work from home"
-        signin_message = f"Triggering punch with mode of work: '{mode_of_work}'"
+        signin_message = f"Triggering punch with mode of work: '{mode_of_work}' - '{current_day}'"
         print(signin_message)
         output = signin(driver, mode_of_work)  # trigger the selenium function for work from home
         print(output)
@@ -151,7 +151,7 @@ def main(driver):
 
     elif current_day in ['thursday', 'friday']:
         mode_of_work = "work from office."
-        signin_message = f"Triggering signin with mode of work: '{mode_of_work}'"
+        signin_message = f"Triggering punch with mode of work: '{mode_of_work}' - '{current_day}'"
         print(signin_message)
         output = signin(driver, mode_of_work)  # trigger the selenium function for work from office
         print(output)
