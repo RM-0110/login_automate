@@ -74,10 +74,10 @@ def signin(driver, mode_of_work):
     for item in dropdown_items:
         if item.text.strip().lower() == mode_of_work:
             item.click()
-            print(f"Clicked on '{mode_of_work.capitalize()}'")
+            print(f"Clicked on '{mode_of_work}'")
             break
     else:
-        return f"Unable to sign in. '{mode_of_work.capitalize()}' option not found."
+        return f"Unable to sign in. '{mode_of_work}' option not found."
     
     # Wait for the signin button and click it
     # shadow_host = WebDriverWait(driver, 10).until(
@@ -89,7 +89,7 @@ def signin(driver, mode_of_work):
     # print("Signin button clicked.")
     
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return f"Successfully signed in to '{mode_of_work.capitalize()}' at {current_time}"
+    return f"Successfully signed in to '{mode_of_work}' at {current_time}"
 
 
 # def signout(driver, mode_of_work):
