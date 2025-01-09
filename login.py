@@ -10,6 +10,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
+import pytz
 
 holiday_list = ["01.01.2025", "14.01.2025", "14.03.2025", "21.03.2025", "31.03.2025", "18.04.2025", "01.05.2025", "06.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
 
@@ -173,13 +174,16 @@ def send_email(subject, body):
         print(f"Failed to send email. Error: {e}")
 
 
-
-
 def main(driver):
-    current_day = datetime.now().strftime("%A").lower()  # Get the current day of the week
-    current_date = datetime.now().strftime("%d.%m.%Y")  # Get the current date in the format dd.mm.yyyy
+    # Define IST timezone
+    ist_timezone = pytz.timezone("Asia/Kolkata")
+    
+    # Get the current date and day in IST
+    current_datetime = datetime.now(ist_timezone)
+    current_day = current_datetime.strftime("%A").lower()  # Get the current day of the week
+    current_date = current_datetime.strftime("%d.%m.%Y")  # Get the current date in the format dd.mm.yyyy
 
-    print("Executing script on "+str(current_date+", "+str(current_day)))
+    print("Executing script on " + str(current_date + ", " + str(current_day)))
     
     # Check if today is a holiday
     if current_date in holiday_list:
@@ -192,7 +196,7 @@ def main(driver):
         mode_of_work = "work from home"
         signin_message = f"Triggering signin with mode of work: '{mode_of_work}'"
         print(signin_message)
-        output = signin(driver, mode_of_work) # trigger the selenium function for work from home
+        output = signin(driver, mode_of_work)  # trigger the selenium function for work from home
         print(output)
         send_email("Sign-in Report", signin_message + "\n" + output)
 
@@ -200,7 +204,7 @@ def main(driver):
         mode_of_work = "work from office."
         signin_message = f"Triggering signin with mode of work: '{mode_of_work}'"
         print(signin_message)
-        output = signin(driver, mode_of_work) #trigger the selenium function for work from office
+        output = signin(driver, mode_of_work)  # trigger the selenium function for work from office
         print(output)
         send_email("Sign-in Report", signin_message + "\n" + output)
 
