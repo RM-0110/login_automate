@@ -87,11 +87,13 @@ def signin(driver, mode_of_work):
     signin_shadow_root  = shadow_host.shadow_root
     signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
     time.sleep(2)
-    signin_button.click()
+    # signin_button.click()
     print("Signin button clicked.")
-    
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    return f"Successfully signed in to '{mode_of_work}' at {current_time}"
+
+    utc_time = datetime.now(pytz.utc)
+    ist_timezone = pytz.timezone('Asia/Kolkata')
+    current_time_ist = utc_time.astimezone(ist_timezone).strftime("%Y-%m-%d %H:%M:%S")
+    return f"Successful punch done on '{mode_of_work}' at {current_time_ist}"
 
 
 def send_email(subject, body):
