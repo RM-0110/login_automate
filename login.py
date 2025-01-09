@@ -19,12 +19,8 @@ password = password = os.getenv('GREYT_PASSWORD')
 
 service = Service(executable_path=ChromeDriverManager().install())
 options = Options()
-options.add_argument("--headless=new")
 options.add_argument("--disable-gpu")
-options.add_argument("--window-size=1920,1080")
-options.add_argument("--no-sandbox")  # Necessary for CI environments
-options.add_argument("--disable-dev-shm-usage")  # Avoid shared memory issues
-options.add_argument("--enable-javascript")
+options.add_argument("--start-maximized")
 driver = webdriver.Chrome(service=service, options=options)
 
 def login(driver, username, password):
