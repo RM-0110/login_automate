@@ -11,6 +11,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 import pytz
+import time 
 
 holiday_list = ["01.01.2025", "14.01.2025", "14.03.2025", "21.03.2025", "31.03.2025", "18.04.2025", "01.05.2025", "06.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
 
@@ -55,6 +56,8 @@ def signin(driver, mode_of_work):
     # Wait for the dropdown to appear
     select = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.TAG_NAME, "gt-dropdown")))
     select.click()
+
+    time.sleep(10)
     
     # Wait for shadow DOM to load
     shadow_root = WebDriverWait(driver, 10).until(
