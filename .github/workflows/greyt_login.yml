@@ -16,10 +16,15 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Install Chrome
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+          sudo apt-get install -y google-chrome-stable xvfb
+
+      - name: Start Xvfb (Virtual Display for Head Mode)
+        run: Xvfb :99 -screen 0 1920x1080x16 &
+        env:
+          DISPLAY: :99
 
       - name: Install Python dependencies
         run: |
@@ -27,6 +32,8 @@ jobs:
           pip install selenium webdriver_manager pytz
 
       - name: Run login.py script
-        run: python login.py
+        run: |
+          python login.py
         env:
           GREYT_PASSWORD: ${{ secrets.GREYT_PASSWORD }}
+          DISPLAY: :99
