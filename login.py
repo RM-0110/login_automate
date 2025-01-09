@@ -16,7 +16,7 @@ import time
 holiday_list = ["01.01.2025", "14.01.2025", "14.03.2025", "21.03.2025", "31.03.2025", "18.04.2025", "01.05.2025", "06.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
 
 username = "E0584"
-password = password = os.getenv('GREYT_PASSWORD')
+password = os.getenv('GREYT_PASSWORD')
 
 service = Service(executable_path=ChromeDriverManager().install())
 options = Options()
@@ -100,7 +100,7 @@ def send_email(subject, body):
     # Set up email credentials and server
     sender_email = "riddhimann@navyatech.in"  # Your email address
     receiver_email = "riddhimann@navyatech.in"  # Receiver email address (it can be the same as sender)
-    password = "wlzy gohu rxzl bqap"  # Get password from environment variables
+    password = os.getenv('APP_PASSWORD')  # Get password from environment variables
 
     # Set up the MIME structure for the email
     msg = MIMEMultipart()
