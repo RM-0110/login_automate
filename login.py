@@ -78,14 +78,16 @@ def signin(driver, mode_of_work):
             break
     else:
         return f"Unable to sign in. '{mode_of_work}' option not found."
+
+    time.sleep(5)
     
-    # shadow_host = WebDriverWait(driver, 10).until(
-    # EC.presence_of_element_located((By.CSS_SELECTOR, ".flex.justify-end.hydrated"))
-    # )
-    # signin_shadow_root  = shadow_host.shadow_root
-    # signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
+    shadow_host = WebDriverWait(driver, 10).until(
+    EC.presence_of_element_located((By.CSS_SELECTOR, ".flex.justify-end.hydrated"))
+    )
+    signin_shadow_root  = shadow_host.shadow_root
+    signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
     # signin_button.click()
-    # print("Signin button clicked.")
+    print("Signin button clicked.")
     
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return f"Successfully signed in to '{mode_of_work}' at {current_time}"
