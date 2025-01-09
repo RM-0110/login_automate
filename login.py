@@ -86,7 +86,8 @@ def signin(driver, mode_of_work):
     )
     signin_shadow_root  = shadow_host.shadow_root
     signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
-    # signin_button.click()
+    time.sleep(2)
+    signin_button.click()
     print("Signin button clicked.")
     
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
