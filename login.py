@@ -56,7 +56,7 @@ def signin(driver, mode_of_work):
     select = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.TAG_NAME, "gt-dropdown")))
     select.click()
 
-    time.sleep(10)
+    time.sleep(5)
     
     # Wait for shadow DOM to load
     shadow_root = WebDriverWait(driver, 10).until(
