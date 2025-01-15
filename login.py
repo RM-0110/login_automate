@@ -157,9 +157,4 @@ def main(driver):
         print(output)
         send_email("Punch Report", signin_message + "\n" + output)
 
-    else:
-        weekend_message = "Today is Saturday or Sunday. No sign-in or sign-out will be triggered."
-        print(weekend_message)
-        send_email("Punch Report - Weekend Notice", weekend_message)
-
 main(driver)
