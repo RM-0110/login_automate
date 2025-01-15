@@ -21,10 +21,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable xvfb
 
-      - name: Start Xvfb (Virtual Display for Head Mode)
-        run: Xvfb :99 -screen 0 1920x1080x16 &
-        env:
-          DISPLAY: :99
+      # - name: Start Xvfb (Virtual Display for Head Mode)
+      #   run: Xvfb :99 -screen 0 1920x1080x16 &
+      #   env:
+      #     DISPLAY: :99
 
       - name: Install Python dependencies
         run: |
@@ -37,4 +37,4 @@ jobs:
         env:
           GREYT_PASSWORD: ${{ secrets.GREYT_PASSWORD }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
-          DISPLAY: :99
+          # DISPLAY: :99
