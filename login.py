@@ -75,7 +75,7 @@ def signin(driver, mode_of_work):
         shadow_root = driver.execute_script("return arguments[0].shadowRoot", select)
         dropdown_items = shadow_root.find_elements(By.CSS_SELECTOR, ".dropdown-item .item-label")
 
-        valid_modes = {"work from home", "work from office"}
+        valid_modes = {"work from home", "work from office."}
         mode_of_work = mode_of_work.strip().lower()
 
         if mode_of_work not in valid_modes:
@@ -152,7 +152,7 @@ def main(driver):
         send_email("Punch Report - Holiday Notice", holiday_message)
         return
 
-    work_mode = "work from home" if current_day in ['monday', 'tuesday', 'wednesday'] else "work from office"
+    work_mode = "work from home" if current_day in ['monday', 'tuesday', 'wednesday'] else "work from office."
 
     signin_message = f"Triggering punch with mode: '{work_mode}' - {current_day}"
     print(signin_message)
