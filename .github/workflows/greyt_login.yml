@@ -19,7 +19,7 @@ jobs:
       - name: Install Chrome and dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable xvfb unzip curl
+          sudo apt-get install -y google-chrome-stable xvfb unzip curl jq
 
       - name: Install Latest ChromeDriver
         run: |
@@ -28,8 +28,9 @@ jobs:
 
           echo "Downloading ChromeDriver from: $LATEST_CHROMEDRIVER_URL"
           curl -o /tmp/chromedriver.zip "$LATEST_CHROMEDRIVER_URL"
-          unzip /tmp/chromedriver.zip -d /usr/local/bin/
-          chmod +x /usr/local/bin/chromedriver
+          unzip /tmp/chromedriver.zip -d /tmp/
+          sudo mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+          sudo chmod +x /usr/local/bin/chromedriver
           chromedriver --version
 
       - name: Start Xvfb (Virtual Display for Headless Mode)
