@@ -100,7 +100,7 @@ def signin(driver, mode_of_work):
         signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
 
         if signin_button:
-            # signin_button.click()
+            signin_button.click()
             print("Signin button clicked.")
         else:
             return "Signin button not found."
