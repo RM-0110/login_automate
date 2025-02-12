@@ -16,24 +16,12 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Install Chrome and dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable xvfb unzip curl jq
+          sudo apt-get install -y google-chrome-stable xvfb
 
-      - name: Install Latest ChromeDriver
-        run: |
-          LATEST_CHROMEDRIVER_URL=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | \
-          jq -r '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url')
-
-          echo "Downloading ChromeDriver from: $LATEST_CHROMEDRIVER_URL"
-          curl -o /tmp/chromedriver.zip "$LATEST_CHROMEDRIVER_URL"
-          unzip /tmp/chromedriver.zip -d /tmp/
-          sudo mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
-          sudo chmod +x /usr/local/bin/chromedriver
-          chromedriver --version
-
-      - name: Start Xvfb (Virtual Display for Headless Mode)
+      - name: Start Xvfb (Virtual Display for Head Mode)
         run: Xvfb :99 -screen 0 1920x1080x16 &
         env:
           DISPLAY: :99
@@ -41,7 +29,16 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install selenium webdriver_manager pytz
+          pip install --upgrade selenium webdriver_manager pytz
+
+      - name: Ensure correct ChromeDriver version
+        run: |
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d '.' -f 1)
+          echo "Chrome version: $CHROME_VERSION"
+          wget -q -O /tmp/chromedriver.zip "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}.0.0/linux64/chromedriver-linux64.zip"
+          unzip /tmp/chromedriver.zip -d /usr/local/bin/
+          chmod +x /usr/local/bin/chromedriver
+          chromedriver --version
 
       - name: Run login.py script
         run: |
