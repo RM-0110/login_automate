@@ -53,6 +53,7 @@ jobs:
       - name: Run login.py script
         run: python login.py
         env:
-          GREYT_PASSWORD: ${{ secrets.GREYT_PASSWORD }}
+          GREYT_PASSWORD_USER1: ${{ secrets.GREYT_PASSWORD_USER1 }}
+          GREYT_PASSWORD_USER2: ${{ secrets.GREYT_PASSWORD_USER2 }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
           DISPLAY: :99
