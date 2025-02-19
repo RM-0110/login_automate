@@ -101,10 +101,11 @@ def signin(driver, username, password, mode_of_work):
         return f"Signin failed! Error: {e}"
 
 def send_email(email, subject, body):
+    sender_email = "riddhimann@navyatech.in"
     password = os.getenv('APP_PASSWORD')
 
     msg = MIMEMultipart()
-    msg['From'] = email
+    msg['From'] = sender_email
     msg['To'] = email
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain'))
@@ -112,8 +113,8 @@ def send_email(email, subject, body):
     try:
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
-        server.login(email, password)
-        server.sendmail(email, email, msg.as_string())
+        server.login(sender_email, password)
+        server.sendmail(sender_email, email, msg.as_string())
         server.quit()
         print("Email sent successfully!")
     except Exception as e:
