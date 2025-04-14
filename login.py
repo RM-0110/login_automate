@@ -37,6 +37,8 @@ chrome_options.add_argument("--window-size=1920,1080")
 
 service = Service(ChromeDriverManager().install())
 
+# This is a test to push code changes to feature branch
+
 def login(driver, username, password):
     try:
         driver.get("https://navyacarehrm.greythr.com/")
