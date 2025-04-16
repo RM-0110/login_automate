@@ -12,6 +12,7 @@ from email.mime.multipart import MIMEMultipart
 import os
 import pytz
 import time
+import random
 
 USERS = {
     "user1": {
@@ -91,6 +92,9 @@ def signin(driver, username, password, mode_of_work):
         signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
         
         if signin_button:
+            random_time = random.randint(60,180)
+            print(f"Sleeping for {random_time} seconds...")
+            time.sleep(random_time)
             signin_button.click()
             print("Signin button clicked.")
         else:
@@ -98,7 +102,7 @@ def signin(driver, username, password, mode_of_work):
 
         ist_timezone = pytz.timezone('Asia/Kolkata')
         current_time_ist = datetime.now(ist_timezone).strftime("%Y-%m-%d %H:%M:%S")
-        return f"Punch successful: '{mode_of_work}' at {current_time_ist}"
+        return f"Punch successful: '{mode_of_work}' at {current_time_ist}, added randomized sleep for {random_time} seconds."
     except Exception as e:
         return f"Signin failed! Error: {e}"
 
