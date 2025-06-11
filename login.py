@@ -92,7 +92,7 @@ def signin(driver, username, password, mode_of_work):
         signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
         
         if signin_button:
-            random_time = random.randint(60,180)
+            random_time = random.randint(120,300)
             print(f"Sleeping for {random_time} seconds...")
             time.sleep(random_time)
             signin_button.click()
