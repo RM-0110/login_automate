@@ -93,8 +93,8 @@ def signin(driver, username, password, mode_of_work):
         
         if signin_button:
             # random_time = random.randint(120,300)
-            print(f"Sleeping for {random_time} seconds...")
-            time.sleep(random_time)
+            # print(f"Sleeping for {random_time} seconds...")
+            # time.sleep(random_time)
             signin_button.click()
             print("Signin button clicked.")
         else:
