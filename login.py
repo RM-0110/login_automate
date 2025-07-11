@@ -20,13 +20,13 @@ USERS = {
         "password": os.getenv('GREYT_PASSWORD_USER1'),
         "email": "riddhimann@navyatech.in",
         "holiday_list": ["07.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
-    },
-    "user2": {
-        "username": "E0614",
-        "password": os.getenv('GREYT_PASSWORD_USER2'),
-        "email": "kirana@navyatech.in",
-        "holiday_list": ["31.03.2025", "01.04.2025", "02.04.2025", "18.04.2025", "01.05.2025", "09.05.2025", "06.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
-    }
+    # },
+    # "user2": {
+    #     "username": "E0614",
+    #     "password": os.getenv('GREYT_PASSWORD_USER2'),
+    #     "email": "kirana@navyatech.in",
+    #     "holiday_list": ["31.03.2025", "01.04.2025", "02.04.2025", "18.04.2025", "01.05.2025", "09.05.2025", "06.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
+    # }
 }
 
 # Chrome setup
@@ -92,7 +92,7 @@ def signin(driver, username, password, mode_of_work):
         signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
         
         if signin_button:
-            random_time = random.randint(120,300)
+            # random_time = random.randint(120,300)
             print(f"Sleeping for {random_time} seconds...")
             time.sleep(random_time)
             signin_button.click()
@@ -102,7 +102,8 @@ def signin(driver, username, password, mode_of_work):
 
         ist_timezone = pytz.timezone('Asia/Kolkata')
         current_time_ist = datetime.now(ist_timezone).strftime("%Y-%m-%d %H:%M:%S")
-        return f"Punch successful: '{mode_of_work}' at {current_time_ist}, added randomized sleep for {random_time} seconds."
+        # return f"Punch successful: '{mode_of_work}' at {current_time_ist}, added randomized sleep for {random_time} seconds."
+        return f"Punch successful: '{mode_of_work}' at {current_time_ist}"
     except Exception as e:
         return f"Signin failed! Error: {e}"
 
