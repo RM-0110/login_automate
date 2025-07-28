@@ -15,18 +15,18 @@ import time
 import random
 
 USERS = {
-    "user1": {
-        "username": "E0584",
-        "password": os.getenv('GREYT_PASSWORD_USER1'),
-        "email": "riddhimann@navyatech.in",
-        "holiday_list": ["07.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
-    },
-    "user2": {
-        "username": "E0614",
-        "password": os.getenv('GREYT_PASSWORD_USER2'),
-        "email": "kirana@navyatech.in",
-        "holiday_list": ["31.03.2025", "01.04.2025", "02.04.2025", "18.04.2025", "01.05.2025", "09.05.2025", "06.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
-    },
+    # "user1": {
+    #     "username": "E0584",
+    #     "password": os.getenv('GREYT_PASSWORD_USER1'),
+    #     "email": "riddhimann@navyatech.in",
+    #     "holiday_list": ["07.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
+    # },
+    # "user2": {
+    #     "username": "E0614",
+    #     "password": os.getenv('GREYT_PASSWORD_USER2'),
+    #     "email": "kirana@navyatech.in",
+    #     "holiday_list": ["31.03.2025", "01.04.2025", "02.04.2025", "18.04.2025", "01.05.2025", "09.05.2025", "06.07.2025", "15.08.2025", "27.08.2025", "01.10.2025", "02.10.2025", "20.10.2025", "25.12.2025"]
+    # },
     "user3": {
         "username": "E0633",
         "password": os.getenv('GREYT_PASSWORD_USER3'),
