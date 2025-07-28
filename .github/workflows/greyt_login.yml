@@ -55,5 +55,6 @@ jobs:
         env:
           GREYT_PASSWORD_USER1: ${{ secrets.GREYT_PASSWORD_USER1 }}
           GREYT_PASSWORD_USER2: ${{ secrets.GREYT_PASSWORD_USER2 }}
+          GREYT_PASSWORD_USER3: ${{ secrets.GREYT_PASSWORD_USER3 }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
           DISPLAY: :99
