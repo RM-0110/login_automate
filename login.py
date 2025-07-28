@@ -46,6 +46,10 @@ service = Service(ChromeDriverManager().install())
 
 # This is a test to push code changes to feature branch
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 def login(driver, username, password):
     try:
         driver.get("https://navyacarehrm.greythr.com/")
@@ -60,10 +64,22 @@ def login(driver, username, password):
         submit_btn = driver.find_element(By.XPATH, "//button[@type='submit']")
         submit_btn.click()
 
-        WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.TAG_NAME, "gt-button")))
-        print("Logged in successfully!")
+        # Wait for either successful login or error message
+        WebDriverWait(driver, 15).until(
+            lambda d: d.find_elements(By.TAG_NAME, "gt-button") or 
+                      d.find_elements(By.XPATH, "//span[contains(text(), 'Invalid User ID or Password')]")
+        )
+
+        # Check if the error message is displayed
+        error_elements = driver.find_elements(By.XPATH, "//span[contains(text(), 'Invalid User ID or Password')]")
+        if error_elements:
+            print("Login failed: Invalid User ID or Password.")
+        else:
+            print("Logged in successfully!")
+
     except Exception as e:
         print(f"Failed to log in! Error: {e}")
+
 
 def signin(driver, username, password, mode_of_work):
     login(driver, username, password)
