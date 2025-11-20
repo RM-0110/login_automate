@@ -19,7 +19,7 @@ USERS = {
         "username": "E0584",
         "password": os.getenv('GREYT_PASSWORD_USER1'),
         "email": "riddhimann@navyatech.in",
-        "holiday_list": ["29.09.2025", "01.10.2025", "02.10.2025", "03.10.2025", "20.10.2025", "25.12.2025"]
+        "holiday_list": ["27.11.2025", "28.11.2025", "25.12.2025"]
     },
     "user2": {
         "username": "E0614",
