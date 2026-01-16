@@ -138,7 +138,6 @@ def signin(driver, username, password, mode_of_work):
             # print(f"Sleeping for {random_time} seconds...")
             # time.sleep(random_time)
 
-            # ⚠️ COMMENT THIS LINE WHEN DRY-RUN / TESTING
             signin_button.click()
 
             print("Signin button clicked.")
