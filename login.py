@@ -14,6 +14,9 @@ import pytz
 import time
 import random
 
+MAX_RETRIES = 2      
+RETRY_WAIT_SEC = 10
+
 USERS = {
     "user1": {
         "username": "E0584",
@@ -57,34 +60,39 @@ def login(driver, username, password):
         driver.get("https://navyacarehrm.greythr.com/")
         print("Opened login page.")
 
-        usr = WebDriverWait(driver, 15).until(EC.visibility_of_element_located((By.ID, "username")))
+        usr = WebDriverWait(driver, 15).until(
+            EC.visibility_of_element_located((By.ID, "username"))
+        )
         usr.send_keys(username)
 
         pw = driver.find_element(By.ID, "password")
         pw.send_keys(password)
 
-        submit_btn = driver.find_element(By.XPATH, "//button[@type='submit']")
-        submit_btn.click()
+        driver.find_element(By.XPATH, "//button[@type='submit']").click()
 
-        # Wait for either successful login or error message
         WebDriverWait(driver, 15).until(
-            lambda d: d.find_elements(By.TAG_NAME, "gt-button") or 
+            lambda d: d.find_elements(By.TAG_NAME, "gt-button") or
                       d.find_elements(By.XPATH, "//span[contains(text(), 'Invalid User ID or Password')]")
         )
 
-        # Check if the error message is displayed
-        error_elements = driver.find_elements(By.XPATH, "//span[contains(text(), 'Invalid User ID or Password')]")
-        if error_elements:
-            print("Login failed: Invalid User ID or Password.")
-        else:
-            print("Logged in successfully!")
+        if driver.find_elements(By.XPATH, "//span[contains(text(), 'Invalid User ID or Password')]"):
+            print("❌ Login failed: Invalid credentials")
+            return False
+
+        print("✅ Login successful")
+        return True
 
     except Exception as e:
-        print(f"Failed to log in! Error: {e}")
+        print(f"❌ Login exception: {e}")
+        return False
 
 
 def signin(driver, username, password, mode_of_work):
-    login(driver, username, password)
+    # ---- LOGIN (retry-aware) ----
+    login_success = login(driver, username, password)
+    if not login_success:
+        return "Login failed"
+
     try:
         sign_in_button = WebDriverWait(driver, 15).until(
             EC.element_to_be_clickable((By.XPATH, "//gt-button[@shade='primary']"))
@@ -92,12 +100,16 @@ def signin(driver, username, password, mode_of_work):
         sign_in_button.click()
         print("Clicked sign-in button.")
 
-        select = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.TAG_NAME, "gt-dropdown")))
+        select = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.TAG_NAME, "gt-dropdown"))
+        )
         select.click()
         time.sleep(3)
 
         shadow_root = driver.execute_script("return arguments[0].shadowRoot", select)
-        dropdown_items = shadow_root.find_elements(By.CSS_SELECTOR, ".dropdown-item .item-label")
+        dropdown_items = shadow_root.find_elements(
+            By.CSS_SELECTOR, ".dropdown-item .item-label"
+        )
 
         for item in dropdown_items:
             if item.text.strip().lower() == mode_of_work:
@@ -108,28 +120,37 @@ def signin(driver, username, password, mode_of_work):
             return f"Option '{mode_of_work}' not found."
 
         time.sleep(3)
-        
+
         shadow_host = WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, ".flex.justify-end.hydrated"))
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, ".flex.justify-end.hydrated")
+            )
         )
-        signin_shadow_root = driver.execute_script("return arguments[0].shadowRoot", shadow_host)
-        signin_button = signin_shadow_root.find_element(By.CSS_SELECTOR, ".btn.btn-primary.btn-medium")
-        
+        signin_shadow_root = driver.execute_script(
+            "return arguments[0].shadowRoot", shadow_host
+        )
+        signin_button = signin_shadow_root.find_element(
+            By.CSS_SELECTOR, ".btn.btn-primary.btn-medium"
+        )
+
         if signin_button:
             # random_time = random.randint(120,300)
             # print(f"Sleeping for {random_time} seconds...")
             # time.sleep(random_time)
+
             signin_button.click()
+
             print("Signin button clicked.")
         else:
             return "Signin button not found."
 
-        ist_timezone = pytz.timezone('Asia/Kolkata')
+        ist_timezone = pytz.timezone("Asia/Kolkata")
         current_time_ist = datetime.now(ist_timezone).strftime("%Y-%m-%d %H:%M:%S")
-        # return f"Punch successful: '{mode_of_work}' at {current_time_ist}, added randomized sleep for {random_time} seconds."
         return f"Punch successful: '{mode_of_work}' at {current_time_ist}"
+
     except Exception as e:
         return f"Signin failed! Error: {e}"
+
 
 def send_email(email, subject, body):
     sender_email = "riddhimann@navyatech.in"
@@ -152,27 +173,69 @@ def send_email(email, subject, body):
         print(f"Failed to send email. Error: {e}")
 
 def process_user(user_config):
-    driver = webdriver.Chrome(service=service, options=chrome_options)
     ist_timezone = pytz.timezone("Asia/Kolkata")
     current_datetime = datetime.now(ist_timezone)
     current_day = current_datetime.strftime("%A").lower()
     current_date = current_datetime.strftime("%d.%m.%Y")
 
     if current_date in user_config["holiday_list"]:
-        holiday_message = f"Today, ({current_date}) is a holiday. No punch required."
-        print(holiday_message)
-        send_email(user_config["email"], "Punch Report - Holiday Notice", holiday_message)
-        driver.quit()
+        msg = f"Today ({current_date}) is a holiday. No punch required."
+        print(msg)
+        send_email(user_config["email"], "Punch Report - Holiday", msg)
         return
 
     work_mode = "work from home" if current_day in ['monday', 'tuesday', 'wednesday'] else "work from office."
-    signin_message = f"Triggering punch for {user_config['username']} with mode: '{work_mode}' - {current_day}"
-    print(signin_message)
-    output = signin(driver, user_config["username"], user_config["password"], work_mode)
-    
-    print(output)
-    send_email(user_config["email"], "Punch Report", signin_message + "\n" + output)
-    driver.quit()
+
+    last_error = None
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        print(f"\n🔁 Attempt {attempt}/{MAX_RETRIES} for {user_config['username']}")
+
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+
+        try:
+            result = signin(
+                driver,
+                user_config["username"],
+                user_config["password"],
+                work_mode
+            )
+
+            print(result)
+
+            if "Punch successful" in result:
+                send_email(
+                    user_config["email"],
+                    "Punch Report - Success",
+                    result
+                )
+                driver.quit()
+                return
+
+            last_error = result
+
+        except Exception as e:
+            last_error = str(e)
+
+        finally:
+            driver.quit()
+
+        if attempt < MAX_RETRIES:
+            print(f"⏳ Retrying after {RETRY_WAIT_SEC} seconds...")
+            time.sleep(RETRY_WAIT_SEC)
+
+    # ❌ Both attempts failed
+    failure_msg = (
+        f"Punch FAILED for {user_config['username']} after {MAX_RETRIES} attempts.\n"
+        f"Last error: {last_error}"
+    )
+    print(failure_msg)
+
+    send_email(
+        user_config["email"],
+        "Punch Report - FAILED",
+        failure_msg
+    )
 
 def main():
     for user, config in USERS.items():
