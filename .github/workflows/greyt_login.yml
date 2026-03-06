@@ -50,8 +50,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install selenium webdriver_manager pytz jq
 
-      - name: Run login.py script
-        run: python login.py
+      - name: Run login.py script (with retry)
+        run: |
+          ATTEMPTS=0
+          MAX_ATTEMPTS=3
+
+          until [ $ATTEMPTS -ge $MAX_ATTEMPTS ]
+          do
+            echo "Attempt $((ATTEMPTS+1)) of $MAX_ATTEMPTS"
+            python login.py && break
+
+            ATTEMPTS=$((ATTEMPTS+1))
+            echo "login.py failed. Retrying in 15 seconds..."
+            sleep 15
+          done
+
+          if [ $ATTEMPTS -eq $MAX_ATTEMPTS ]; then
+            echo "login.py failed after $MAX_ATTEMPTS attempts."
+            exit 1
+          fi
         env:
           GREYT_PASSWORD_USER1: ${{ secrets.GREYT_PASSWORD_USER1 }}
           GREYT_PASSWORD_USER2: ${{ secrets.GREYT_PASSWORD_USER2 }}
