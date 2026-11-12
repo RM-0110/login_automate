@@ -1,54 +1,57 @@
+
 name: Automate Login
 
 on:
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
 
 jobs:
   automate-login:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # latest ubuntu version 4
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5 # latest python version 5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.8'
 
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip curl google-chrome-stable xvfb
+          sudo apt-get install -y wget unzip curl jq xvfb google-chrome-stable
 
-      - name: Start Xvfb (Virtual Display for Head Mode)
-        run: Xvfb :99 -screen 0 1920x1080x16 &
+      - name: Start Xvfb (Virtual Display)
+        run: |
+          Xvfb :99 -screen 0 1920x1080x16 &
         env:
           DISPLAY: :99
 
-      - name: Install ChromeDriver (Latest Compatible)
+      - name: Install ChromeDriver
         run: |
-          # Fetch latest stable Chrome version
           LATEST_CHROME_VERSION=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq -r '.channels.Stable.version')
+
           echo "Latest Chrome version: $LATEST_CHROME_VERSION"
 
-          # Fetch latest ChromeDriver matching the stable version
-          CHROMEDRIVER_URL=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq -r ".channels.Stable.downloads.chromedriver[] | select(.platform == \"linux64\") | .url")
+          CHROMEDRIVER_URL=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json | jq -r '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url')
+
           echo "Downloading ChromeDriver from: $CHROMEDRIVER_URL"
 
           wget -q -O /tmp/chromedriver.zip "$CHROMEDRIVER_URL"
-          unzip /tmp/chromedriver.zip -d /tmp/chromedriver
+          unzip -o /tmp/chromedriver.zip -d /tmp/chromedriver
+
           sudo mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
           sudo chmod +x /usr/local/bin/chromedriver
 
-          # Verify installation
+          echo "Verifying installations:"
           google-chrome --version
           chromedriver --version
 
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install selenium webdriver_manager pytz jq
+          python -m pip install selenium webdriver_manager pytz
 
       - name: Run login.py script
         run: python login.py
